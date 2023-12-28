@@ -1,0 +1,16 @@
+#heatmap  {
+  font-family: "Fira Code", monospace;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+}
+#tooltip {
+  position: absolute;
+  opacity: 0;
+  background: dimgray;
+  color: lightgray;
+  padding: 4px;
+}
+#heatmap #legend g text {
+  font-size: 0.8rem;
+}

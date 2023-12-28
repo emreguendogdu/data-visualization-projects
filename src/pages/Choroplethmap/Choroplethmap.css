@@ -1,0 +1,20 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
+#choroplath {
+  font-family: "Montserrat", sans-serif;
+  margin: 0;
+  padding: 0;
+  text-align: center;
+  background: #efefef;
+  height: 100vh;
+}
+#tooltip {
+  position: absolute;
+  background: lightblue;
+  padding: 6px;
+  border: 1px solid gray;
+}
+.states {
+  fill: none;
+  stroke: white;
+  stroke-linejoin: round;
+}

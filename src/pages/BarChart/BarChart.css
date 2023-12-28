@@ -1,0 +1,45 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
+:root {
+  --chart-color: #7d82b8;
+}
+
+#barchart {
+  font-family: "Montserrat", sans-serif;
+}
+#barchart * {
+  margin: 0;
+  padding: 0;
+}
+
+#barchart h1 {
+  font-weight: bold;
+}
+#barchart h1 a {
+  color: black;
+  font-size: 60%;
+}
+
+#barchart #card-container {
+  padding: 3rem;
+
+  background: white;
+}
+
+#barchart #graph-container {
+  padding-top: 1rem;
+}
+
+/* Chart */
+#barchart svg rect.bar {
+  fill: var(--chart-color);
+}
+
+/* Chart Axis' */
+#barchart svg g {
+  fill: dimgray;
+}
+
+/* Chart Axis' Text (Years or Billions) */
+#barchart svg g text {
+  font-size: 0.8rem;
+}
