@@ -7,7 +7,7 @@
   background: #efefef;
   height: 100vh;
 }
-#tooltip {
+#choropleth-tooltip {
   position: absolute;
   background: lightblue;
   padding: 6px;

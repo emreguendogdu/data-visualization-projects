@@ -1,82 +1,85 @@
 /* eslint-disable no-undef */
-import "./Heatmap.css";
-import { useEffect } from "react";
+import "./Heatmap.css"
+import { useEffect } from "react"
 
 export default function Heatmap() {
   useEffect(() => {
-    const section = d3.select("#heatmap");
+    const section = d3.select("#heatmap")
 
     const DATA_URL =
-      "https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/global-temperature.json";
+      "https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/global-temperature.json"
 
-    const colorsDomain = [2.8, 3.9, 5, 6.1, 7.2, 8.3, 9.4, 10.5, 11.6, 12.9];
+    const colorsDomain = [2.8, 3.9, 5, 6.1, 7.2, 8.3, 9.4, 10.5, 11.6, 12.9]
 
-    const colorList = d3.schemeRdYlBu[10].reverse();
+    const colorList = d3.schemeRdYlBu[10].reverse()
 
-    const description = document.querySelector("#description");
+    const description = document.querySelector("#description")
 
-    const color = d3.scaleThreshold().domain(colorsDomain).range(colorList);
+    const color = d3.scaleThreshold().domain(colorsDomain).range(colorList)
     const margin = { top: 16, right: 9 * 16, bottom: 8 * 16, left: 9 * 16 },
-      height = 33 * 12;
+      height = 33 * 12
 
     const svg = section
       .append("svg")
       .attr("width", "100%")
-      .attr("height", height + margin.top + margin.bottom);
+      .attr("height", height + margin.top + margin.bottom)
 
-    const tooltip = d3.select("body").append("div").attr("id", "tooltip");
+    const tooltip = d3
+      .select("body")
+      .append("div")
+      .attr("id", "heatmap-tooltip")
 
     function drawGraph(data) {
-      data.monthlyVariance.forEach((d) => (d.month -= 1));
+      data.monthlyVariance.forEach((d) => (d.month -= 1))
 
-      const width = 4 * Math.ceil(data.monthlyVariance.length / 12);
+      const width = 4 * Math.ceil(data.monthlyVariance.length / 12)
       const xScale = d3
         .scaleBand()
         .domain(data.monthlyVariance.map((d) => d.year))
-        .range([0, width]);
+        .range([0, width])
 
       const yScale = d3
         .scaleBand()
         .domain(d3.range(0, 12, 1))
-        .range([0, height]);
+        .range([0, height])
 
       const yAxis = d3
         .axisLeft()
         .scale(yScale)
         .tickValues(yScale.domain())
         .tickFormat((month) => {
-          const date = new Date(0);
-          date.setUTCMonth(month);
-          const monthFormat = d3.utcFormat("%B");
-          return monthFormat(date);
+          const date = new Date(0)
+          date.setUTCMonth(month)
+          const monthFormat = d3.utcFormat("%B")
+          return monthFormat(date)
         })
-        .tickSize(10, 1);
+        .tickSize(10, 1)
 
       const xAxis = d3
         .axisBottom()
         .scale(xScale)
         .tickValues(xScale.domain().filter((year) => year % 10 === 0)) // 1780-1790-1800 etc.
         .tickFormat((year) => {
-          const date = new Date(0);
-          date.setUTCFullYear(year);
-          const yearFormat = d3.utcFormat("%Y");
-          return yearFormat(date);
+          const date = new Date(0)
+          date.setUTCFullYear(year)
+          const yearFormat = d3.utcFormat("%Y")
+          return yearFormat(date)
         })
-        .tickSize(10, 1);
+        .tickSize(10, 1)
 
       svg
         .append("g")
         .attr("id", "y-axis")
         .attr("transform", `translate(${margin.left}, ${margin.top})`)
         .style("text-anchor", "end")
-        .call(yAxis);
+        .call(yAxis)
 
       svg
         .append("g")
         .attr("id", "x-axis")
         .attr("transform", `translate(${margin.left}, ${height + margin.top})`)
         .style("text-anchor", "middle")
-        .call(xAxis);
+        .call(xAxis)
 
       const map = svg
         .append("g")
@@ -84,7 +87,7 @@ export default function Heatmap() {
         .attr("transform", `translate(${margin.left}, ${margin.top})`)
         .selectAll("rect")
         .data(data.monthlyVariance)
-        .enter();
+        .enter()
 
       map
         .append("rect")
@@ -98,14 +101,14 @@ export default function Heatmap() {
         .attr("height", (d) => yScale.bandwidth(d.month))
         .attr("fill", (d) => color(data.baseTemperature + d.variance))
         .on("mouseover", (e) => {
-          const dataObject = e.target["__data__"];
+          const dataObject = e.target["__data__"]
 
           tooltip
             .style("opacity", 0.9)
             .style("transform", "translateX(16px)")
-            .attr("data-year", dataObject.year);
+            .attr("data-year", dataObject.year)
 
-          const date = new Date(dataObject.year, dataObject.month);
+          const date = new Date(dataObject.year, dataObject.month)
 
           tooltip
             .html(
@@ -118,12 +121,12 @@ export default function Heatmap() {
               )}&#8451;</span>`
             )
             .style("left", `${e.pageX}px`)
-            .style("top", `${e.pageY - 28}px`);
+            .style("top", `${e.pageY - 28}px`)
         })
-        .on("mouseout", () => tooltip.style("opacity", 0));
+        .on("mouseout", () => tooltip.style("opacity", 0))
 
       const LEGEND_WIDTH = 400,
-        LEGEND_HEIGHT = 40;
+        LEGEND_HEIGHT = 40
 
       const legend = svg
         .append("g")
@@ -133,19 +136,19 @@ export default function Heatmap() {
           `translate(${width - margin.right - margin.left}, ${
             margin.top * 3 + height + margin.bottom - 2 * LEGEND_HEIGHT
           })`
-        );
+        )
 
       const legendX = d3
         .scaleLinear()
         .domain([d3.min(colorsDomain), d3.max(colorsDomain)])
-        .range([0, LEGEND_WIDTH]);
+        .range([0, LEGEND_WIDTH])
 
       const legendXAxis = d3
         .axisBottom()
         .scale(legendX)
         .tickSize(28)
         .tickValues(colorsDomain)
-        .tickFormat(d3.format(".1f"));
+        .tickFormat(d3.format(".1f"))
 
       legend
         .append("g")
@@ -156,20 +159,20 @@ export default function Heatmap() {
         .attr("x", (d) => legendX(d))
         .attr("fill", (d) => color(d))
         .attr("width", 52)
-        .attr("height", 27.27);
+        .attr("height", 27.27)
 
-      legend.append("g").call(legendXAxis);
+      legend.append("g").call(legendXAxis)
     }
 
     d3.json(DATA_URL)
       .then((data) => {
         description.innerHTML = `${data.monthlyVariance[0].year} - ${
           data.monthlyVariance[data.monthlyVariance.length - 1].year
-        }: base temperature ${data.baseTemperature} &#8451;`;
-        drawGraph(data);
+        }: base temperature ${data.baseTemperature} &#8451;`
+        drawGraph(data)
       })
-      .catch((err) => console.log(`Error, ${err}`));
-  });
+      .catch((err) => console.log(`Error, ${err}`))
+  })
   return (
     <>
       <section id="heatmap">
@@ -179,5 +182,5 @@ export default function Heatmap() {
         </header>
       </section>
     </>
-  );
+  )
 }

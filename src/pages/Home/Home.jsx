@@ -17,6 +17,9 @@ export default function Home() {
         <article>
           <h3>Tree Map</h3>
         </article>
+        <article>
+          <h3>Scatter Plot</h3>
+        </article>
       </main>
       <footer>
         <a

@@ -27,6 +27,11 @@ export default function Navbar() {
             Tree Map
           </a>
         </li>
+        <li>
+          <a className="router-nav-items" href="/#/scatterplot">
+            Scatter Plot
+          </a>
+        </li>
       </ul>
     </nav>
   )
