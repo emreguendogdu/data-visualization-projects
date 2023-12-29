@@ -1,25 +1,29 @@
 import Navbar from "../../components/Navbar/Navbar"
+import * as d3 from "d3"
 
+const dataset =
+  "https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/cyclist-data.json"
+
+const margin = { top: 100, right: 20, bottom: 30, left: 60 },
+  width = 920 - margin.left - margin.right,
+  height = 630 - margin.top - margin.bottom
+
+const xScale = d3.scaleLinear().range([0, width])
+const yScale = d3.scaleTime().range([0, height])
+
+const color = d3.scaleOrdinal(d3.schemeCategory10)
+
+const timeFormat = d3.timeFormat("%M:%S")
+
+const xAxis = d3.axisBottom(xScale).tickFormat(d3.format("d"))
+const yAxis = d3.axisLeft(yScale).tickFormat(timeFormat)
+
+const section = d3
+  .select("#root")
+  .append("section")
+  .attr("id", "scatterplot-section")
 export default function ScatterPlot() {
-  const dataset =
-    "https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/cyclist-data.json"
-
-  const margin = { top: 100, right: 20, bottom: 30, left: 60 },
-    width = 920 - margin.left - margin.right,
-    height = 630 - margin.top - margin.bottom
-
-  const xScale = d3.scaleLinear().range([0, width])
-  const yScale = d3.scaleTime().range([0, height])
-
-  const color = d3.scaleOrdinal(d3.schemeCategory10)
-
-  const timeFormat = d3.timeFormat("%M:%S")
-
-  const xAxis = d3.axisBottom(xScale).tickFormat(d3.format("d"))
-  const yAxis = d3.axisLeft(yScale).tickFormat(timeFormat)
-
-  const svg = d3
-    .select("body")
+  const svg = section
     .append("svg")
     .attr("width", `${width + margin.left + margin.right}`)
     .attr("height", `${height + margin.top + margin.bottom}`)
@@ -28,8 +32,7 @@ export default function ScatterPlot() {
     .append("g")
     .attr("transform", "translate(" + margin.left + "," + margin.top + ")")
 
-  const tooltip = d3
-    .select("body")
+  const tooltip = section
     .append("div")
     .attr("id", "tooltip")
     .attr(

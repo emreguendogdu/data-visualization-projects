@@ -1,4 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Dhurjati&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Dhurjati&family=Kanit&display=swap");
+:root {
+  --treemap-hover-color: #6c9fc6;
+}
 * {
   padding: 0;
   margin: 0;
@@ -21,39 +24,43 @@
   margin: 0 32px;
 }
 #treemap #links-div {
-  font-size: 1.35rem;
+  border-bottom: 0.5px solid black;
 }
-#treemap .links {
+#treemap .link {
   text-decoration: none;
   padding: 0 4px;
   color: black;
-  transition: 600ms;
+  transition: 400ms;
   position: relative;
   display: inline-block;
+  cursor: pointer;
 }
-#treemap .links::after {
+#treemap .link::after {
   content: "";
   position: absolute;
   width: 0px;
-  height: 5px;
+  height: 3px;
   left: 50%;
   bottom: 0;
-  background-color: #a33e67;
+  background-color: var(--treemap-hover-color);
 
-  transition: 600ms ease-in-out;
+  transition: 400ms ease-in-out;
 }
-#treemap .links:hover::after {
+#treemap .link:hover::after {
   width: 100%;
   left: 0;
 }
-#treemap .links:hover {
-  color: #a33e67;
+#treemap .link:hover {
+  color: var(--treemap-hover-color);
 }
-#treemap .links#movies {
+#treemap .link#movies {
   border-left: 1px solid black;
   border-right: 1px solid black;
 }
 #treemap text {
+  font-family: "Kanit", sans-serif;
+  font-size: 0.8rem;
+  fill: black;
   user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;

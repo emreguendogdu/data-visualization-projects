@@ -2,17 +2,19 @@
 import Navbar from "../../components/Navbar/Navbar"
 import "./Heatmap.css"
 import { useEffect } from "react"
+import * as d3 from "d3"
+
+const DATA_URL =
+  "https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/global-temperature.json"
+
+const colorsDomain = [2.8, 3.9, 5, 6.1, 7.2, 8.3, 9.4, 10.5, 11.6, 12.9]
+
+const colorList = d3.schemeRdYlBu[10].reverse()
 
 export default function Heatmap() {
   useEffect(() => {
     const section = d3.select("#heatmap")
-
-    const DATA_URL =
-      "https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/global-temperature.json"
-
-    const colorsDomain = [2.8, 3.9, 5, 6.1, 7.2, 8.3, 9.4, 10.5, 11.6, 12.9]
-
-    const colorList = d3.schemeRdYlBu[10].reverse()
+    const tooltip = section.append("div").attr("id", "tooltip")
 
     const description = document.querySelector("#description")
 
@@ -24,11 +26,6 @@ export default function Heatmap() {
       .append("svg")
       .attr("width", "100%")
       .attr("height", height + margin.top + margin.bottom)
-
-    const tooltip = d3
-      .select("body")
-      .append("div")
-      .attr("id", "heatmap-tooltip")
 
     function drawGraph(data) {
       data.monthlyVariance.forEach((d) => (d.month -= 1))
@@ -173,7 +170,7 @@ export default function Heatmap() {
         drawGraph(data)
       })
       .catch((err) => console.log(`Error, ${err}`))
-  })
+  }, [])
   return (
     <>
       <Navbar />

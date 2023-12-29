@@ -1,7 +1,8 @@
 /* eslint-disable no-undef */
+import { useEffect, useState } from "react"
 import Navbar from "../../components/Navbar/Navbar"
 import "./Treemap.css"
-import { useEffect, useState } from "react"
+import * as d3 from "d3"
 
 const DATASETS = {
   videogames: {
@@ -24,174 +25,169 @@ const DATASETS = {
       "https://cdn.rawgit.com/freeCodeCamp/testable-projects-fcc/a80ce8f9/src/data/tree_map/kickstarter-funding-data.json",
   },
 }
-const urlParams = new URLSearchParams(window.location.hash)
+
 const DEFAULT_DATASET = "videogames"
 
-export default function Treemap() {
+const Treemap = () => {
   const [datasetState, setDatasetState] = useState(DEFAULT_DATASET)
-  console.log("State", datasetState)
 
-  const section = d3.select("#treemap")
-  const tooltip = section
-    .append("div")
-    .attr("id", "tooltip")
-    .style("opacity", "0")
+  useEffect(() => {
+    const fetchData = async () => {
+      const section = d3.select("#treemap")
 
-  // useEffect(() => {
-  //   setDatasetState(urlParams.get("#/treemap?data"))
-  //   console.log("setDatasetState: ", urlParams.get("#/treemap?data"))
-  // }, [datasetState])
+      // Remove before renew
+      section.selectAll("#tooltip, #tree-map, #legend").remove()
 
-  // useEffect(() => {
-  //   const urlDataset = urlParams.get("#/treemap?data")
-  //   const newDataset = urlDataset || DEFAULT_DATASET
-  //   setDatasetState(newDataset)
-  //   console.log("setDatasetState: ", datasetState)
-  // }, [urlParams]) 
+      const tooltip = section
+        .append("div")
+        .attr("id", "tooltip")
+        .style("opacity", "0")
 
-  // setDatasetState(urlParams.get("#/treemap?data"))
+      const width = 900
+      const height = 500
 
-  const DATASET = DATASETS[datasetState || DEFAULT_DATASET]
-  console.log("DATASET AQ: ", DATASET)
+      const svg = section
+        .append("svg")
+        .attr("id", "tree-map")
+        .attr("width", width)
+        .attr("height", height)
 
-  const width = 900,
-    height = 500
+      const fader = (color) => d3.interpolateRgb(color, "#fff")(0.2)
+      const color = d3.scaleOrdinal().range(d3.schemeSpectral[11].map(fader))
+      const legend = section.append("svg").attr("id", "legend")
+      const treemap = d3.treemap().size([width, height]).paddingInner(1)
 
-  const svg = section
-    .append("svg")
-    .attr("id", "tree-map")
-    .attr("width", width)
-    .attr("height", height)
+      try {
+        const data = await d3.json(
+          DATASETS[datasetState || DEFAULT_DATASET].FILE_PATH
+        )
 
-  const fader = (color) => d3.interpolateRgb(color, "#fff")(0.2)
-
-  const color = d3.scaleOrdinal().range(d3.schemeSpectral[11].map(fader))
-
-  const legend = section.append("svg").attr("id", "legend")
-
-  const treemap = d3.treemap().size([width, height]).paddingInner(1)
-
-  d3.json(DATASET.FILE_PATH).then((data) => {
-    const root = d3
-      .hierarchy(data)
-      .eachBefore((d) => (d.data.id = d.parent ? d.parent.data.id + "." : ""))
-      .sum((d) => d.value)
-      .sort((a, b) => b.height - a.height || b.value - a.value)
-
-    treemap(root)
-
-    const cell = svg
-      .selectAll("g")
-      .data(root.leaves())
-      .enter()
-      .append("g")
-      .attr("class", "group")
-      .attr("transform", (d) => `translate(${d.x0}, ${d.y0})`)
-
-    cell
-      .append("rect")
-      .attr("class", "tile")
-      .attr("width", (d) => d.x1 - d.x0)
-      .attr("height", (d) => d.y1 - d.y0)
-      .attr("data-name", (d) => d.data.name)
-      .attr("data-category", (d) => d.data.category)
-      .attr("data-value", (d) => d.data.value)
-      .style("stroke", "black")
-      .style("fill", (d) => color(d.data.category))
-      .on("mousemove", (e, d) => {
-        tooltip.style("opacity", "0.9").attr("data-value", d.data.value)
-
-        tooltip
-          .html(
-            `Name: ${d.data.name}<br>Category: ${d.data.category}<br>Value: ${d.data.value}`
+        const root = d3
+          .hierarchy(data)
+          .eachBefore(
+            (d) => (d.data.id = d.parent ? d.parent.data.id + "." : "")
           )
-          .style("left", `${e.pageX + 10}px`)
-          .style("top", `${e.pageY + 20}px`)
-      })
-      .on("mouseout", () => tooltip.style("opacity", "0"))
+          .sum((d) => d.value)
+          .sort((a, b) => b.height - a.height || b.value - a.value)
 
-    cell
-      .append("text")
-      .selectAll("tspan")
-      .data((d) => d.data.name.split(/(?=[A-Z][^A-Z])/g))
-      .enter()
-      .append("tspan")
-      .attr("x", 4)
-      .attr("y", (d, i) => 13 + i * 10)
-      .text((d) => d)
-      .style("font-size", ".8rem")
-      .style("fill", "black")
+        treemap(root)
 
-    const LEGEND_WIDTH = 500,
-      LEGEND_RECT_SIZE = 15,
-      LEGEND_H_SPACING = 150,
-      LEGEND_V_SPACING = 10,
-      LEGEND_TEXT_X_OFFSET = 3,
-      LEGEND_TEXT_Y_OFFSET = -2,
-      legendElemsPerRow = Math.floor(LEGEND_WIDTH / LEGEND_H_SPACING)
+        const cell = svg
+          .selectAll("g")
+          .data(root.leaves())
+          .enter()
+          .append("g")
+          .attr("class", "group")
+          .attr("transform", (d) => `translate(${d.x0}, ${d.y0})`)
 
-    legend.attr("width", LEGEND_WIDTH).attr("height", 200)
+        cell
+          .append("rect")
+          .attr("class", "tile")
+          .attr("width", (d) => d.x1 - d.x0)
+          .attr("height", (d) => d.y1 - d.y0)
+          .attr("data-name", (d) => d.data.name)
+          .attr("data-category", (d) => d.data.category)
+          .attr("data-value", (d) => d.data.value)
+          .style("stroke", "black")
+          .style("fill", (d) => color(d.data.category))
+          .on("mousemove", (e, d) => {
+            tooltip.style("opacity", "0.98").attr("data-value", d.data.value)
 
-    let categories = root.leaves().map((nodes) => nodes.data.category)
+            tooltip
+              .html(
+                `Name: ${d.data.name}<br>Category: ${d.data.category}<br>Value: ${d.data.value}`
+              )
+              .style("left", `${e.pageX + 10}px`)
+              .style("top", `${e.pageY + 20}px`)
+          })
+          .on("mouseout", () => tooltip.style("opacity", "0"))
 
-    categories = categories.filter(
-      (category, index, self) => self.indexOf(category) === index
-    )
+        cell
+          .append("text")
+          .selectAll("tspan")
+          .data((d) => d.data.name.split(/(?=[A-Z][^A-Z])/g))
+          .enter()
+          .append("tspan")
+          .attr("x", 4)
+          .attr("y", (d, i) => 13 + i * 10)
+          .text((d) => d)
 
-    const legendElement = legend
-      .append("g")
-      .attr("transform", `translate(60, 20)`)
-      .selectAll("g")
-      .data(categories)
-      .enter()
-      .append("g")
-      .attr(
-        "transform",
-        (d, i) =>
-          `translate(${(i % legendElemsPerRow) * LEGEND_H_SPACING}, ${
-            Math.floor(i / legendElemsPerRow) * LEGEND_RECT_SIZE +
-            LEGEND_V_SPACING * Math.floor(i / legendElemsPerRow)
-          })`
-      )
+        const LEGEND_WIDTH = 500
+        const LEGEND_RECT_SIZE = 15
+        const LEGEND_H_SPACING = 150
+        const LEGEND_V_SPACING = 10
+        const LEGEND_TEXT_X_OFFSET = 3
+        const LEGEND_TEXT_Y_OFFSET = -2
+        const legendElemsPerRow = Math.floor(LEGEND_WIDTH / LEGEND_H_SPACING)
 
-    legendElement
-      .append("rect")
-      .attr("class", "legend-item")
-      .attr("width", LEGEND_RECT_SIZE)
-      .attr("height", LEGEND_RECT_SIZE)
-      .attr("fill", (d) => color(d))
+        legend.attr("width", LEGEND_WIDTH).attr("height", 200)
 
-    legendElement
-      .append("text")
-      .attr("x", LEGEND_RECT_SIZE + LEGEND_TEXT_X_OFFSET)
-      .attr("y", LEGEND_RECT_SIZE + LEGEND_TEXT_Y_OFFSET)
-      .text((d) => d)
-      .style("font-size", "")
-  })
+        let categories = root.leaves().map((nodes) => nodes.data.category)
+
+        categories = categories.filter(
+          (category, index, self) => self.indexOf(category) === index
+        )
+
+        const legendElement = legend
+          .append("g")
+          .attr("transform", `translate(60, 20)`)
+          .selectAll("g")
+          .data(categories)
+          .enter()
+          .append("g")
+          .attr(
+            "transform",
+            (d, i) =>
+              `translate(${(i % legendElemsPerRow) * LEGEND_H_SPACING}, ${
+                Math.floor(i / legendElemsPerRow) * LEGEND_RECT_SIZE +
+                LEGEND_V_SPACING * Math.floor(i / legendElemsPerRow)
+              })`
+          )
+
+        legendElement
+          .append("rect")
+          .attr("class", "legend-item")
+          .attr("width", LEGEND_RECT_SIZE)
+          .attr("height", LEGEND_RECT_SIZE)
+          .attr("fill", (d) => color(d))
+
+        legendElement
+          .append("text")
+          .attr("x", LEGEND_RECT_SIZE + LEGEND_TEXT_X_OFFSET)
+          .attr("y", LEGEND_RECT_SIZE + LEGEND_TEXT_Y_OFFSET)
+          .text((d) => d)
+          .style("font-size", "")
+      } catch (error) {
+        console.error("Error fetching data:", error)
+      }
+    }
+
+    fetchData()
+  }, [datasetState])
 
   return (
     <>
       <Navbar />
       <section id="treemap">
-        <div className="links-div">
+        <div id="links-div">
           {Object.keys(DATASETS).map((DATASET) => {
             return (
               <a
-                href={`#/treemap?data=${DATASET}`}
+                onClick={() => setDatasetState(DATASET)}
                 id={DATASET}
                 key={DATASET}
-                className="links"
+                className="link"
               >
                 {DATASETS[DATASET].TITLE} Data Set
               </a>
             )
           })}
         </div>
-        <h1 className="treemap-title">{DATASETS[datasetState].TITLE}</h1>
-        <h3 className="treemap-description">
-          {DATASETS[datasetState].DESCRIPTION}
-        </h3>
+        <h1 id="title">{DATASETS[datasetState].TITLE}</h1>
+        <h3 id="description">{DATASETS[datasetState].DESCRIPTION}</h3>
       </section>
     </>
   )
 }
+
+export default Treemap

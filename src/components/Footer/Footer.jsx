@@ -4,11 +4,7 @@ import LinkedInIcon from "../../assets/linkedinicon.svg"
 export default function Footer() {
   return (
     <footer>
-      <a
-        target="_blank"
-        rel="noreferrer"
-        href="https://github.com/osmangund/data-visualization-projects"
-      >
+      <a target="_blank" rel="noreferrer" href="https://github.com/osmangund">
         <img src={GitHubIcon} alt="GitHub" className="icon" />
       </a>
       <a

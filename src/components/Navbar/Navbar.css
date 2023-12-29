@@ -1,3 +1,9 @@
+@media only screen and (max-width: 850px) {
+  nav ul a {
+    font-size: 1.25rem !important;
+  }
+}
+
 :root {
   --navbar-hover-color: lightgray;
 }

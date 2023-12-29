@@ -2,22 +2,11 @@
 import { useEffect } from "react"
 import "./Choroplethmap.css"
 import Navbar from "../../components/Navbar/Navbar"
+import * as d3 from "d3"
 
 export default function Choroplethmap() {
   useEffect(() => {
-    const section = d3.select("#choroplethmap")
-
-    section
-      .append("h1")
-      .attr("id", "title")
-      .text("United States Educational Attainment")
-
-    section
-      .append("p")
-      .attr("id", "description")
-      .text(
-        "Percentage of individuals aged 25 and above holding a bachelor's degree or higher (2010-2014)"
-      )
+    const section = d3.select("#choropleth")
 
     const svg = section.append("svg").attr("width", 900).attr("height", 600)
 
@@ -38,7 +27,7 @@ export default function Choroplethmap() {
 
     const tooltip = section
       .append("div")
-      .attr("id", "choropleth-tooltip")
+      .attr("id", "tooltip")
       .attr("style", "opacity: 0;")
 
     const x = d3.scaleLinear().domain([2.6, 75.1]).rangeRound([600, 860])
@@ -107,6 +96,7 @@ export default function Choroplethmap() {
         .append("g")
         .attr("class", "countries")
         .selectAll("path")
+        // eslint-disable-next-line no-undef
         .data(topojson.feature(us, us.objects.counties).features)
         .enter()
         .append("path")
@@ -141,12 +131,18 @@ export default function Choroplethmap() {
         .attr("class", "states")
         .attr("d", path)
     }
-  })
+  }, [])
 
   return (
     <>
       <Navbar />
-      <section id="choroplethmap"></section>
+      <section id="choropleth">
+        <h1 id="title">United States Educational Attainment</h1>
+        <p id="description">
+          Percentage of individuals aged 25 and above holding a bachelor&apos;s
+          degree or higher (2010-2014)
+        </p>
+      </section>
     </>
   )
 }
