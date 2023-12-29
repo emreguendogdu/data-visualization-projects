@@ -1,4 +1,5 @@
 /* eslint-disable no-undef */
+import Navbar from "../../components/Navbar/Navbar"
 import "./Heatmap.css"
 import { useEffect } from "react"
 
@@ -175,6 +176,7 @@ export default function Heatmap() {
   })
   return (
     <>
+      <Navbar />
       <section id="heatmap">
         <header>
           <h1 id="title">Monthly Global Land-Surface Temperature</h1>

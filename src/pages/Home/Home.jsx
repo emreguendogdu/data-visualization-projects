@@ -1,35 +1,53 @@
+import "./Home.css"
 export default function Home() {
   return (
     <>
       <main id="home">
         <article>
-          <h3>Bar Chart</h3>
-          <p>
-            Display United States gross domestic product with bar chart data.{" "}
-          </p>
+          <a href="/#/barchart">
+            <h3 className="title">Bar Chart</h3>
+            <p>
+              Visualize United States gross domestic product with a bar graph.{" "}
+            </p>
+          </a>
         </article>
         <article>
-          <h3>Choropleth Map</h3>
+          <a href="/#/choropleth">
+            <h3 className="title">Choropleth Map</h3>
+            <p>
+              Display United States Educational Attainment with choropleth,
+              statistical thematic, map.{" "}
+            </p>
+          </a>
         </article>
         <article>
-          <h3>Heat Map</h3>
+          <a href="/#/heatmap">
+            <h3 className="title">Heat Map</h3>
+            <p>
+              Visualize monthy global land surface temperature with a heat map.
+            </p>
+          </a>
         </article>
         <article>
-          <h3>Tree Map</h3>
+          <a href="/#/treemap">
+            <h3 className="title">Tree Map</h3>
+            <p>
+              Visualize most sold video games by platform, highest grossing
+              movies by genre and most pledged kickstarter campaigns by category
+              with a treemap diagram.
+            </p>
+          </a>
         </article>
         <article>
-          <h3>Scatter Plot</h3>
+          <a href="/#/scatterplot">
+            <h3 className="title">Scatter Plot</h3>
+            <p>
+              Visualize doping in professional bicycle racing with a scatter
+              plot.
+            </p>
+          </a>
         </article>
       </main>
-      <footer>
-        <a
-          target="_blank"
-          rel="noreferrer"
-          href="https://github.com/osmangund/data-visualization-projects"
-        >
-          GitHub
-        </a>
-      </footer>
     </>
   )
 }

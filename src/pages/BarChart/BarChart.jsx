@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 import { useEffect } from "react"
 import "./BarChart.css"
+import Navbar from "../../components/Navbar/Navbar"
 
 export default function BarChart() {
   useEffect(() => {
@@ -120,6 +121,7 @@ export default function BarChart() {
   })
   return (
     <>
+      <Navbar />
       <section id="barchart">
         <div id="card-container">
           <h1 id="title">

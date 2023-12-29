@@ -1,3 +1,5 @@
+import Navbar from "../../components/Navbar/Navbar"
+
 export default function ScatterPlot() {
   const dataset =
     "https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/cyclist-data.json"
@@ -173,5 +175,9 @@ export default function ScatterPlot() {
     })
     .catch((err) => console.log("Error: " + err))
 
-  return <></>
+  return (
+    <>
+      <Navbar />
+    </>
+  )
 }

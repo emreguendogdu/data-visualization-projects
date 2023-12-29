@@ -1,6 +1,7 @@
 /* eslint-disable no-undef */
 import { useEffect } from "react"
 import "./Choroplethmap.css"
+import Navbar from "../../components/Navbar/Navbar"
 
 export default function Choroplethmap() {
   useEffect(() => {
@@ -144,6 +145,7 @@ export default function Choroplethmap() {
 
   return (
     <>
+      <Navbar />
       <section id="choroplethmap"></section>
     </>
   )
