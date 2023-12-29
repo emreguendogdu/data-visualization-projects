@@ -1,6 +1,6 @@
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
 :root {
-  --chart-color: #7d82b8;
+  --bar-chart-color: #7d82b8;
 }
 
 #barchart {
@@ -31,7 +31,7 @@
 
 /* Chart */
 #barchart svg rect.bar {
-  fill: var(--chart-color);
+  fill: var(--bar-chart-color);
 }
 
 /* Chart Axis' */

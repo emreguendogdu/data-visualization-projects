@@ -1,3 +1,6 @@
+:root {
+  --navbar-hover-color: lightgray;
+}
 nav {
   font-family: "Montserrat", sans-serif;
   position: fixed;
@@ -28,7 +31,7 @@ nav ul a {
   height: 5px;
   right: 0%;
   bottom: 0;
-  background-color: var(--highlight-color);
+  background-color: var(--navbar-hover-color);
 
   transition: 300ms ease-in-out;
 }
@@ -37,5 +40,5 @@ nav ul a {
   left: 0;
 }
 .router-nav-items:hover {
-  color: var(--highlight-color);
+  color: var(--navbar-hover-color);
 }

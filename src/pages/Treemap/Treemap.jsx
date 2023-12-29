@@ -36,39 +36,23 @@ export default function Treemap() {
     .append("div")
     .attr("id", "tooltip")
     .style("opacity", "0")
-  const linksDiv = section.append("div").attr("id", "links-div")
-  const datasetKeys = Object.keys(DATASETS)
 
-  useEffect(() => {
-    console.log("setDatasetState: ", urlParams.get("#/treemap?data"))
-    setDatasetState(urlParams.get("#/treemap?data"))
-  }, [datasetState])
+  // useEffect(() => {
+  //   setDatasetState(urlParams.get("#/treemap?data"))
+  //   console.log("setDatasetState: ", urlParams.get("#/treemap?data"))
+  // }, [datasetState])
+
+  // useEffect(() => {
+  //   const urlDataset = urlParams.get("#/treemap?data")
+  //   const newDataset = urlDataset || DEFAULT_DATASET
+  //   setDatasetState(newDataset)
+  //   console.log("setDatasetState: ", datasetState)
+  // }, [urlParams]) 
+
+  // setDatasetState(urlParams.get("#/treemap?data"))
 
   const DATASET = DATASETS[datasetState || DEFAULT_DATASET]
   console.log("DATASET AQ: ", DATASET)
-
-  for (
-    let datasetIndex = 0;
-    datasetIndex < datasetKeys.length;
-    datasetIndex++
-  ) {
-    const datasetKey = datasetKeys[datasetIndex]
-    const dataset = DATASETS[datasetKey]
-
-    linksDiv
-      .append("a")
-      .attr("id", datasetKey)
-      .attr("class", "links")
-      .text(dataset.TITLE + " Data Set")
-      .attr("href", `#/treemap?data=${datasetKey}`)
-    // .on("click", () => {
-    //   setDatasetState(datasetKey)
-    // })
-  }
-
-  section.append("h1").attr("id", "title").text(DATASET.TITLE)
-
-  section.append("h3").attr("id", "description").text(DATASET.DESCRIPTION)
 
   const width = 900,
     height = 500
@@ -86,7 +70,7 @@ export default function Treemap() {
   const legend = section.append("svg").attr("id", "legend")
 
   const treemap = d3.treemap().size([width, height]).paddingInner(1)
-  console.log(DATASET.FILE_PATH)
+
   d3.json(DATASET.FILE_PATH).then((data) => {
     const root = d3
       .hierarchy(data)
@@ -188,7 +172,26 @@ export default function Treemap() {
   return (
     <>
       <Navbar />
-      <section id="treemap"></section>
+      <section id="treemap">
+        <div className="links-div">
+          {Object.keys(DATASETS).map((DATASET) => {
+            return (
+              <a
+                href={`#/treemap?data=${DATASET}`}
+                id={DATASET}
+                key={DATASET}
+                className="links"
+              >
+                {DATASETS[DATASET].TITLE} Data Set
+              </a>
+            )
+          })}
+        </div>
+        <h1 className="treemap-title">{DATASETS[datasetState].TITLE}</h1>
+        <h3 className="treemap-description">
+          {DATASETS[datasetState].DESCRIPTION}
+        </h3>
+      </section>
     </>
   )
 }
