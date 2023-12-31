@@ -1,0 +1,20 @@
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap");
+
+section#scatterplot {
+  font-family: "Montserrat", sans-serif;
+  padding-bottom: 50px;
+}
+
+section#scatterplot #title {
+  font-size: 2rem;
+  font-weight: bold;
+}
+section#scatterplot #description {
+  font-size: 1.5rem;
+}
+span.bold {
+  font-weight: bold;
+}
+span.tooltip-doping-info {
+  border-top: .5px solid black;
+}

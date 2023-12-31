@@ -14,9 +14,68 @@ footer {
 footer a {
   font-size: 1.5rem;
   text-decoration: none;
-  color: white; 
+  color: white;
+  position: relative;
 }
 
 footer img {
   padding: 10px 4px 0px 4px;
+  animation: fade-up 0.5s;
+}
+
+#github-icon:hover {
+  animation: rotate 1s;
+}
+#linkedin-icon:hover {
+}
+
+@keyframes rotate {
+  0% {
+    rotate: 0deg;
+  }
+
+  100% {
+    rotate: 360deg;
+  }
+}
+
+span {
+  position: absolute;
+  font-size: 2rem;
+  top: 50%;
+  left: 50%;
+  opacity: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+.rain {
+  opacity: 1;
+  animation: rain 3s;
+}
+
+@keyframes rain {
+  0% {
+    transform: translateY(0) translateX(0) scale(1);
+  }
+  25% {
+    transform: translateY(var(--rain-anim1)px) translateX(5px) scale(1);
+  }
+  50% {
+    transform: translateY(var(--rain-anim2)px) translateX(7.5px) scale(1);
+  }
+  100% {
+    transform: translateY(var(--rain-anim2)px) scale(0);
+  }
+}
+
+@keyframes bounce {
+  0%,
+  100% {
+    transform: translateY(20%);
+    animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+  }
+  50% {
+    transform: none;
+    animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+  }
 }

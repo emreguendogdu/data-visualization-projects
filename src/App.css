@@ -13,3 +13,10 @@ body {
   margin: 0;
   padding-top: 5rem;
 }
+
+svg {
+  animation: fade-up .5s;
+}
+h1,h2,h3, p {
+  animation: fade-down .5s;
+}
