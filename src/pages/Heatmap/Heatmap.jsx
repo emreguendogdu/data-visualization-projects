@@ -16,8 +16,6 @@ export default function Heatmap() {
     const section = d3.select("#heatmap")
     const tooltip = section.append("div").attr("id", "tooltip")
 
-    const description = document.querySelector("#description")
-
     const color = d3.scaleThreshold().domain(colorsDomain).range(colorList)
     const margin = { top: 16, right: 9 * 16, bottom: 8 * 16, left: 9 * 16 },
       height = 33 * 12
@@ -98,26 +96,26 @@ export default function Heatmap() {
         .attr("width", (d) => xScale.bandwidth(d.year))
         .attr("height", (d) => yScale.bandwidth(d.month))
         .attr("fill", (d) => color(data.baseTemperature + d.variance))
-        .on("mouseover", (e) => {
-          const dataObject = e.target["__data__"]
-
+        .on("mouseover", (e, d) => {
           tooltip
             .style("opacity", 0.9)
             .style("transform", "translateX(16px)")
-            .attr("data-year", dataObject.year)
+            .attr("data-year", d.year)
 
-          const date = new Date(dataObject.year, dataObject.month)
+          const date = new Date(d.year, d.month)
 
           tooltip
-            .html(
-              `<span class="date">${d3.utcFormat("%Y - %B")(
+            .html(() => {
+              return `<span class="date">${d3.utcFormat("%Y - %B")(
                 date
-              )}</span><br><span class="temperature">${d3.format(".1f")(
-                data.baseTemperature + dataObject.variance
-              )}&#8451;</span><br><span class="variance">${d3.format(".1f")(
-                dataObject.variance
-              )}&#8451;</span>`
-            )
+              )}</span><br>
+              <span class="temperature">${d3.format(".1f")(
+                data.baseTemperature + d.variance
+              )}</span>&#8451;<br>
+              <span class="variance">${d3.format(".1f")(
+                d.variance
+              )}</span>&#8451;`
+            })
             .style("left", `${e.pageX}px`)
             .style("top", `${e.pageY - 28}px`)
         })
@@ -161,12 +159,15 @@ export default function Heatmap() {
 
       legend.append("g").call(legendXAxis)
     }
+    const getDescription = (data) => {
+      return `${data.monthlyVariance[0].year} - ${
+        data.monthlyVariance[data.monthlyVariance.length - 1].year
+      }: base temperature ${data.baseTemperature} &#8451;`
+    }
 
     d3.json(DATA_URL)
       .then((data) => {
-        description.innerHTML = `${data.monthlyVariance[0].year} - ${
-          data.monthlyVariance[data.monthlyVariance.length - 1].year
-        }: base temperature ${data.baseTemperature} &#8451;`
+        document.querySelector("#description").innerHTML = getDescription(data)
         drawGraph(data)
       })
       .catch((err) => console.log(`Error, ${err}`))

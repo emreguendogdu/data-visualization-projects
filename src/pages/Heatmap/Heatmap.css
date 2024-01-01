@@ -1,5 +1,5 @@
-@import url('https://fonts.googleapis.com/css2?family=Kanit&display=swap');
-#heatmap  {
+@import url("https://fonts.googleapis.com/css2?family=Kanit&display=swap");
+#heatmap {
   font-family: "Kanit", sans-serif;
   margin: 0;
   padding: 0;
@@ -8,9 +8,18 @@
 #heatmap #tooltip {
   position: absolute;
   opacity: 0;
-  background: dimgray;
-  color: lightgray;
-  padding: 4px;
+  border: .5px solid black;
+  border-radius: 5%;
+  background: #f9e19a;
+  color: black;
+  padding: 8px;
+}
+#heatmap #tooltip .date {
+  color: black;
+}
+
+#heatmap #tooltip .temperature, #heatmap #tooltip .variance {
+  font-weight: bold;
 }
 #heatmap #legend g text {
   font-size: 0.8rem;

@@ -18,7 +18,7 @@
   border: 1px solid black;
   pointer-events: none;
   padding: 0 4px;
-  font-size: 1rem;
+  font-size: 1.25rem;
 }
 #treemap svg {
   margin: 0 32px;
@@ -34,6 +34,8 @@
   position: relative;
   display: inline-block;
   cursor: pointer;
+
+  animation: fade-in 1s;
 }
 #treemap .link::after {
   content: "";
@@ -61,7 +63,16 @@
   font-family: "Kanit", sans-serif;
   font-size: 0.8rem;
   fill: black;
-""  user-select: none;
+  user-select: none;
   -moz-user-select: none;
   -webkit-user-select: none;
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
 }

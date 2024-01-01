@@ -41,7 +41,7 @@
   padding: 8px;
   opacity: 0;
   animation: fade-up 1s ease forwards;
-  animation-delay: calc(var(--order) * 200ms);
+  animation-delay: calc(var(--order) * 100ms);
 }
 
 #home article a {

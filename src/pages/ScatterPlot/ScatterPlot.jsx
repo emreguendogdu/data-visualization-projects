@@ -4,7 +4,7 @@ import * as d3 from "d3"
 import "./ScatterPlot.css"
 
 const dataset =
-  "https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/cyclist-data.json"
+  "https://raw.githubusercontent.com/freeCodeCamp/ProjectReferencd/master/cyclist-data.json"
 
 const margin = { top: 50, right: 20, bottom: 30, left: 60 },
   width = 920 - margin.left - margin.right,
@@ -42,7 +42,7 @@ export default function ScatterPlot() {
       .append("text")
       .attr("id", "description")
       .text("35 Fastest times up Alpe d'Huez")
-      
+
       .attr("x", 300)
       .attr("y", 30)
 
@@ -92,10 +92,6 @@ export default function ScatterPlot() {
         .style("text-anchor", "end")
         .text("Best Time (minutes)")
 
- 
-
-      const barWidth = width / data.length
-
       svg
         .selectAll(".dot")
         .data(data)
@@ -108,8 +104,7 @@ export default function ScatterPlot() {
         .attr("data-xvalue", (d) => d.Year)
         .attr("data-yvalue", (d) => d.Time.toISOString())
         .style("fill", (d) => color(d.Doping !== ""))
-        .on("mouseover", (e) => {
-          const eData = e.target["__data__"]
+        .on("mouseover", (e, d) => {
           tooltip
             .transition()
             .duration(200)
@@ -120,13 +115,13 @@ export default function ScatterPlot() {
           tooltip
             .html(
               `
-        <span class="bold">${eData.Name}</span>, ${
-                eData.Nationality
+        <span class="bold">${d.Name}</span>, ${
+                d.Nationality
               }<br>Year: <span class="bold">${
-                eData.Year
-              }</span>, Time: <span class="bold">${timeFormat(
-                eData.Time
-              )}</span> ${eData.Doping ? "<br>" + eData.Doping : ""}
+                d.Year
+              }</span>, Time: <span class="bold">${timeFormat(d.Time)}</span> ${
+                d.Doping ? "<br>" + d.Doping : ""
+              }
       `
             )
             .style("left", `${e.pageX}px`)
@@ -158,7 +153,9 @@ export default function ScatterPlot() {
         .attr("dy", ".35em")
         .attr("text-anchor", "end")
         .text((d) =>
-          d ? "Riders with doping allegations" : "Riders with no doping allegations"
+          d
+            ? "Riders with doping allegations"
+            : "Riders with no doping allegations"
         )
     }
 

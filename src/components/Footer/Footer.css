@@ -23,10 +23,10 @@ footer img {
   animation: fade-up 0.5s;
 }
 
-#github-icon:hover {
+footer #github-icon:hover {
   animation: rotate 1s;
 }
-#linkedin-icon:hover {
+footer #linkedin-icon:hover {
 }
 
 @keyframes rotate {
@@ -39,7 +39,7 @@ footer img {
   }
 }
 
-span {
+footer span {
   position: absolute;
   font-size: 2rem;
   top: 50%;
@@ -48,7 +48,7 @@ span {
   pointer-events: none;
   z-index: 1;
 }
-.rain {
+footer .rain {
   opacity: 1;
   animation: rain 3s;
 }
@@ -58,13 +58,13 @@ span {
     transform: translateY(0) translateX(0) scale(1);
   }
   25% {
-    transform: translateY(var(--rain-anim1)px) translateX(5px) scale(1);
+    transform: translateY(var(--rain-anim1) px) translateX(5px) scale(1);
   }
   50% {
-    transform: translateY(var(--rain-anim2)px) translateX(7.5px) scale(1);
+    transform: translateY(var(--rain-anim2) px) translateX(7.5px) scale(1);
   }
   100% {
-    transform: translateY(var(--rain-anim2)px) scale(0);
+    transform: translateY(var(--rain-anim2) px) scale(0);
   }
 }
 
