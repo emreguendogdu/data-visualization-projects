@@ -11,7 +11,7 @@ import Footer from "./components/Footer/Footer"
 function App() {
   return (
     <>
-      <HashRouter>
+      <HashRouter basename="/data-visualization-projects">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/choropleth" element={<Choroplethmap />} />
