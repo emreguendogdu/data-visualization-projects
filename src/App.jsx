@@ -1,5 +1,5 @@
 import "./App.css"
-import { HashRouter, Routes, Route } from "react-router-dom"
+import { BrowserRouter, Routes, Route } from "react-router-dom"
 import Home from "./pages/Home/Home"
 import BarChart from "./pages/BarChart/BarChart"
 import Choroplethmap from "./pages/Choroplethmap/Choroplethmap"
@@ -11,7 +11,7 @@ import Footer from "./components/Footer/Footer"
 function App() {
   return (
     <>
-      <HashRouter  basename="/">
+      <BrowserRouter basename="/">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/choropleth" element={<Choroplethmap />} />
@@ -20,7 +20,7 @@ function App() {
           <Route path="/barchart" element={<BarChart />} />
           <Route path="/scatterplot" element={<ScatterPlot />} />
         </Routes>
-      </HashRouter>
+      </BrowserRouter>
       <Footer />
     </>
   )
