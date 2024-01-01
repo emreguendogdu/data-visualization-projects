@@ -4,7 +4,7 @@ import * as d3 from "d3"
 import "./ScatterPlot.css"
 
 const dataset =
-  "https://raw.githubusercontent.com/freeCodeCamp/ProjectReferencd/master/cyclist-data.json"
+  "https://raw.githubusercontent.com/freeCodeCamp/ProjectReferenceData/master/cyclist-data.json"
 
 const margin = { top: 50, right: 20, bottom: 30, left: 60 },
   width = 920 - margin.left - margin.right,
@@ -38,23 +38,18 @@ export default function ScatterPlot() {
       .attr("id", "title")
       .text("Doping in Professional Bicycle Racing")
       .attr("x", 200)
+
     svg
       .append("text")
       .attr("id", "description")
       .text("35 Fastest times up Alpe d'Huez")
-
       .attr("x", 300)
       .attr("y", 30)
 
-    const tooltip = section
-      .append("div")
-      .attr("id", "tooltip")
-      .attr(
-        "style",
-        "position: absolute; padding: 4px; background: lightgray; border: 1px solid black; opacity: 0; pointer-events: none;"
-      )
+    const tooltip = section.append("div").attr("id", "tooltip")
 
     function DrawGraph(data) {
+      console.log("Data: ", data)
       data.forEach((d) => {
         d.Place = +d.Place
         const parsedTime = d.Time.split(":")
