@@ -40,7 +40,7 @@ export default function Home() {
           </a>
         </article>
         <article style={{ "--order": 5 }}>
-          <a href="/data-visualization-projects/#/#/scatterplot">
+          <a href="/data-visualization-projects/#/scatterplot">
             <h3 className="title">Scatter Plot</h3>
             <p className="description">Doping in cycling scatter graph</p>
           </a>
