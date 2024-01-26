@@ -27,6 +27,7 @@
   display: flex;
   justify-content: center;
 }
+
 #home-header a#title {
   color: white;
   text-decoration: none;
@@ -39,9 +40,9 @@
 
 #home article {
   padding: 8px;
-  opacity: 0;
-  animation: fade-up 1s ease forwards;
-  animation-delay: calc(var(--order) * 100ms);
+  opacity: 1;
+  transition: 600ms ease-in-out;
+  animation: fade-up 0.5s forwards;
 }
 
 #home article a {
@@ -54,7 +55,6 @@
 }
 #home article .title,
 #home article .description {
-  transition: 600ms ease-in-out;
 }
 #home article .title {
   position: relative;

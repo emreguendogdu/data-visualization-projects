@@ -20,6 +20,99 @@ const timeFormat = d3.timeFormat("%M:%S")
 const xAxis = d3.axisBottom(xScale).tickFormat(d3.format("d"))
 const yAxis = d3.axisLeft(yScale).tickFormat(timeFormat)
 
+function createAxes(svg) {
+  svg
+    .append("g")
+    .attr("id", "x-axis")
+    .attr("transform", `translate(0, ${height})`)
+    .call(xAxis)
+    .append("text")
+    .attr("class", "x-axis-label")
+    .attr("x", width)
+    .attr("y", -6)
+    .style("text-anchor", "end")
+    .text("Year")
+
+  svg
+    .append("g")
+    .attr("id", "y-axis")
+    .call(yAxis)
+    .append("text")
+    .style("color", "black")
+    .attr("class", "label")
+    .attr("transform", "rotate(-90)")
+    .attr("y", 6)
+    .attr("dy", ".71em")
+    .style("text-anchor", "end")
+    .text("Best Time (minutes)")
+}
+
+function createDots(svg, data, tooltip) {
+  svg
+    .selectAll(".dot")
+    .data(data)
+    .enter()
+    .append("circle")
+    .attr("class", "dot")
+    .attr("r", 6)
+    .attr("cx", (d) => xScale(d.Year))
+    .attr("cy", (d) => yScale(d.Time))
+    .attr("data-xvalue", (d) => d.Year)
+    .attr("data-yvalue", (d) => d.Time.toISOString())
+    .style("fill", (d) => color(d.Doping !== ""))
+    .on("mouseover", (e, d) => {
+      tooltip
+        .transition()
+        .duration(200)
+        .style("opacity", 0.9)
+        .style("color", "black")
+        .attr("data-year", e.target.attributes["data-xvalue"].value)
+
+      tooltip
+        .html(
+          `
+        <span class="bold">${d.Name}</span>, ${
+            d.Nationality
+          }<br>Year: <span class="bold">${
+            d.Year
+          }</span>, Time: <span class="bold">${timeFormat(d.Time)}</span> ${
+            d.Doping ? "<br>" + d.Doping : ""
+          }
+      `
+        )
+        .style("left", `${e.pageX}px`)
+        .style("top", `${e.pageY - 28}px`)
+    })
+    .on("mouseout", () => tooltip.style("opacity", 0))
+}
+
+function createLegend(legendContainer) {
+  const legend = legendContainer
+    .selectAll("#legend")
+    .data(color.domain())
+    .enter()
+    .append("g")
+    .attr("class", "legend-label")
+    .attr("transform", (d, i) => `translate(0, ${height / 2 - i * 20})`)
+
+  legend
+    .append("rect")
+    .attr("x", width - 18)
+    .attr("width", 18)
+    .attr("height", 18)
+    .style("fill", color)
+
+  legend
+    .append("text")
+    .attr("x", width - 24)
+    .attr("y", 9)
+    .attr("dy", ".35em")
+    .attr("text-anchor", "end")
+    .text((d) =>
+      d ? "Riders with doping allegations" : "Riders with no doping allegations"
+    )
+}
+
 export default function ScatterPlot() {
   useEffect(() => {
     const section = d3.select("#scatterplot")
@@ -62,96 +155,13 @@ export default function ScatterPlot() {
       ])
       yScale.domain(d3.extent(data, (d) => d.Time))
 
-      svg
-        .append("g")
-        .attr("id", "x-axis")
-        .attr("transform", `translate(0, ${height})`)
-        .call(xAxis)
-        .append("text")
-        .attr("class", "x-axis-label")
-        .attr("x", width)
-        .attr("y", -6)
-        .style("text-anchor", "end")
-        .text("Year")
+      createAxes(svg)
 
-      svg
-        .append("g")
-        .attr("id", "y-axis")
-        .call(yAxis)
-        .append("text")
-        .style("color", "black")
-        .attr("class", "label")
-        .attr("transform", "rotate(-90)")
-        .attr("y", 6)
-        .attr("dy", ".71em")
-        .style("text-anchor", "end")
-        .text("Best Time (minutes)")
-
-      svg
-        .selectAll(".dot")
-        .data(data)
-        .enter()
-        .append("circle")
-        .attr("class", "dot")
-        .attr("r", 6)
-        .attr("cx", (d) => xScale(d.Year))
-        .attr("cy", (d) => yScale(d.Time))
-        .attr("data-xvalue", (d) => d.Year)
-        .attr("data-yvalue", (d) => d.Time.toISOString())
-        .style("fill", (d) => color(d.Doping !== ""))
-        .on("mouseover", (e, d) => {
-          tooltip
-            .transition()
-            .duration(200)
-            .style("opacity", 0.9)
-            .style("color", "black")
-            .attr("data-year", e.target.attributes["data-xvalue"].value)
-
-          tooltip
-            .html(
-              `
-        <span class="bold">${d.Name}</span>, ${
-                d.Nationality
-              }<br>Year: <span class="bold">${
-                d.Year
-              }</span>, Time: <span class="bold">${timeFormat(d.Time)}</span> ${
-                d.Doping ? "<br>" + d.Doping : ""
-              }
-      `
-            )
-            .style("left", `${e.pageX}px`)
-            .style("top", `${e.pageY - 28}px`)
-        })
-        .on("mouseout", () => tooltip.style("opacity", 0))
+      createDots(svg, data, tooltip)
 
       const legendContainer = svg.append("g").attr("id", "legend")
 
-      const legend = legendContainer
-        .selectAll("#legend")
-        .data(color.domain())
-        .enter()
-        .append("g")
-        .attr("class", "legend-label")
-        .attr("transform", (d, i) => `translate(0, ${height / 2 - i * 20})`)
-
-      legend
-        .append("rect")
-        .attr("x", width - 18)
-        .attr("width", 18)
-        .attr("height", 18)
-        .style("fill", color)
-
-      legend
-        .append("text")
-        .attr("x", width - 24)
-        .attr("y", 9)
-        .attr("dy", ".35em")
-        .attr("text-anchor", "end")
-        .text((d) =>
-          d
-            ? "Riders with doping allegations"
-            : "Riders with no doping allegations"
-        )
+      createLegend(legendContainer)
     }
 
     d3.json(dataset)
@@ -165,7 +175,7 @@ export default function ScatterPlot() {
     <>
       <Navbar />
       <section id="scatterplot">
-        <header></header>
+        <header />
       </section>
     </>
   )
