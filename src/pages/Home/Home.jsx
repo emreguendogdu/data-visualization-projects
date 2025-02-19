@@ -7,11 +7,11 @@ export default function Home() {
         <a
           id="title"
           href="
-        https://www.linkedin.com/in/osmangund/"
+        https://www.linkedin.com/in/emregnd/"
           target="_blank"
           rel="noreferrer"
         >
-          osmangund®
+          emregnd®
         </a>
       </header>
       <main id="home">
