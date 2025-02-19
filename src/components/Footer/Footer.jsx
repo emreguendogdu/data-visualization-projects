@@ -27,14 +27,14 @@ export default function Footer() {
         id="github-icon"
         target="_blank"
         rel="noreferrer"
-        href="https://github.com/osmangund"
+        href="https://github.com/emreguendogdu"
       >
         <img src={GitHubIcon} alt="GitHub" className="icon" />
       </a>
       <a
         target="_blank"
         rel="noreferrer"
-        href="https://linkedin.com/in/osmangund"
+        href="https://linkedin.com/in/emregnd"
         onMouseOver={() => rainAnimation()}
       >
         <img src={LinkedInIcon} alt="LinkedIn" className="icon" />
